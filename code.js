@@ -1,11 +1,20 @@
-const API_ROOT = "https://api.wanikani.com/v2/";
-const SUBJECTS_URL = API_ROOT + "subjects";
-const REVIEWS_URL  = API_ROOT + "reviews";
-const API_TOKEN = "";
+const API_ROOT = 'https://api.wanikani.com/v2/';
+const SUBJECTS_URL = API_ROOT + 'subjects';
+const REVIEWS_URL  = API_ROOT + 'reviews';
+
+// find API key from properties store
+
+const API_TOKEN = PropertiesService.getScriptProperties().getProperty('API_TOKEN');
+if (API_TOKEN === null || API_TOKEN.length === 0) {
+  PropertiesService.getUserProperties().setProperty('API_TOKEN', '');
+  Logger.log('Please set API_TOKEN user property to your Wanikani API key.');
+  throw 'API_TOKEN is null or ""';
+};
+
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
 function main () {
-  
+  Logger.log('Begin main function')
 }
 
 function get_json (url, query=null) {
@@ -25,7 +34,7 @@ function get_json (url, query=null) {
             return JSON.parse(response.getContentText());
         }
     }
-    catch (e){
+    catch (e){      
         throw e;
     }
-} 
+}
