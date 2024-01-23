@@ -4,12 +4,7 @@ const REVIEWS_URL  = API_ROOT + 'reviews';
 
 // find API key from properties store
 
-const API_TOKEN = PropertiesService.getScriptProperties().getProperty('API_TOKEN');
-if (API_TOKEN === null || API_TOKEN.length === 0) {
-  PropertiesService.getUserProperties().setProperty('API_TOKEN', '');
-  Logger.log('Please set API_TOKEN user property to your Wanikani API key.');
-  throw 'API_TOKEN is null or ""';
-};
+const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script property to your Wanikani API key.')
 
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
@@ -34,7 +29,27 @@ function get_json (url, query=null) {
             return JSON.parse(response.getContentText());
         }
     }
-    catch (e){      
+    catch (e){
+        
         throw e;
     }
+}
+
+function get_script_property(key, log_message=null, error_message=null) {
+  let value = PropertiesService.getScriptProperties().getProperty(key);
+  if (value === null || value.length === 0) {
+    PropertiesService.getUserProperties().setProperty(key, '');
+    if (log_message !== null) {
+      Logger.log(log_message);
+    }
+    else {
+      Logger.log(`Please provide a value for '${key}'`);
+    }
+    if (error_message !== null) {
+      throw error_message;
+    }
+    else {
+      throw `Script property '${key}' is null or empty`;
+    }
+};
 }
