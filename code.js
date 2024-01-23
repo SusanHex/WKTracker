@@ -38,7 +38,7 @@ function get_json (url, query=null) {
 function get_script_property(key, log_message=null, error_message=null) {
   let value = PropertiesService.getScriptProperties().getProperty(key);
   if (value === null || value.length === 0) {
-    PropertiesService.getUserProperties().setProperty(key, '');
+    PropertiesService.getScriptProperties().setProperty(key, '');
     if (log_message !== null) {
       Logger.log(log_message);
     }
