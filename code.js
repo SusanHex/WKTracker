@@ -36,20 +36,22 @@ function get_json (url, query=null) {
 }
 
 function get_script_property(key, log_message=null, error_message=null) {
-  let value = PropertiesService.getScriptProperties().getProperty(key);
-  if (value === null || value.length === 0) {
-    PropertiesService.getScriptProperties().setProperty(key, '');
-    if (log_message !== null) {
-      Logger.log(log_message);
-    }
-    else {
-      Logger.log(`Please provide a value for '${key}'`);
-    }
-    if (error_message !== null) {
-      throw error_message;
-    }
-    else {
-      throw `Script property '${key}' is null or empty`;
-    }
-};
+    let value = PropertiesService.getScriptProperties().getProperty(key);
+    if (value === null || value.length === 0) {
+        PropertiesService.getScriptProperties().setProperty(key, '');
+        if (log_message !== null) {
+            Logger.log(log_message);
+        }
+        else if (log_message !== ''){
+            Logger.log(`Please provide a value for '${key}'`);
+        }
+        if (error_message !== null) {
+            throw error_message;
+        }
+        else if (error_message !== '') {
+            throw `Script property '${key}' is null or empty`;
+        }
+        return null;
+    };
+    return value;
 }
