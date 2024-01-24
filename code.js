@@ -17,7 +17,7 @@ function get_json (url, query=null) {
     let config = {
       'method': 'get',
       'headers': {
-        'Authorization': API_TOKEN, 
+        'Authorization': `Bearer ${API_TOKEN}`, 
       },
     };
     if (query !== null) {
@@ -30,7 +30,7 @@ function get_json (url, query=null) {
         }
     }
     catch (e){
-        
+        Logger.log(`GET "${url_string}" encountered an error: "${e}"`);
         throw e;
     }
 }
@@ -39,17 +39,17 @@ function get_script_property(key, log_message=null, error_message=null) {
     let value = PropertiesService.getScriptProperties().getProperty(key);
     if (value === null || value.length === 0) {
         PropertiesService.getScriptProperties().setProperty(key, '');
-        if (log_message !== null) {
-            Logger.log(log_message);
-        }
-        else if (log_message !== ''){
+        if (log_message === null) {
             Logger.log(`Please provide a value for '${key}'`);
         }
-        if (error_message !== null) {
-            throw error_message;
+        else if (log_message.length > 0){
+            Logger.log(log_message);
         }
-        else if (error_message !== '') {
+        if (error_message === null) {
             throw `Script property '${key}' is null or empty`;
+        }
+        else if (error_message.length > 0) {
+            throw error_message;
         }
         return null;
     };
