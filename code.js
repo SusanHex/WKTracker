@@ -4,7 +4,7 @@ const REVIEWS_URL  = API_ROOT + 'reviews';
 
 // find API key from properties store
 
-const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script property to your Wanikani API key.')
+const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script property to your Wanikani API key.');
 
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
@@ -54,4 +54,12 @@ function get_script_property(key, log_message=null, error_message=null) {
         return null;
     };
     return value;
+}
+
+function get_reviews() {
+
+}
+
+function get_subjects() {
+    
 }
