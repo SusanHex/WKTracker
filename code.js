@@ -1,6 +1,6 @@
 const API_ROOT = 'https://api.wanikani.com/v2/';
 const SUBJECTS_URL = API_ROOT + 'subjects';
-const REVIEWS_URL  = API_ROOT + 'reviews';
+const REVIEW_STATISTICS_URL  = API_ROOT + 'review_statistics';
 
 // find API key from properties store
 
@@ -9,7 +9,9 @@ const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script 
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
 function main () {
-  Logger.log('Begin main function')
+    Logger.log('Begin main function');
+    let review_stats = get_review_statistics();
+    Logger.log(review_stats);
 }
 
 function get_json (url, query=null) {
@@ -56,10 +58,11 @@ function get_script_property(key, log_message=null, error_message=null) {
     return value;
 }
 
-function get_reviews() {
-
+function get_review_statistics() {
+    let review_stats = get_json(REVIEW_STATISTICS_URL);
+    return review_stats;
 }
 
 function get_subjects() {
-    
+
 }
