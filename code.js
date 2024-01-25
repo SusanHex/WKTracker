@@ -12,6 +12,13 @@ function main () {
     Logger.log('Begin main function');
     let review_stats = get_review_statistics();
     Logger.log(review_stats);
+    let subject_ids = [];
+    for (const review of review_stats) {
+        subject_ids.push(review.data.subject_id);
+    }
+    Logger.log(`Found ${subject_ids.length} subject IDs`);
+    let subjects = get_subjects(subject_ids);
+    Logger.log(`Found ${subjects.length} subjects`);
 }
 
 function get_json (url, query=null) {
@@ -71,6 +78,29 @@ function get_review_statistics() {
     return review_stats_data;
 }
 
-function get_subjects() {
+function get_subjects(subjects=null) {
+    let subject_response = null;
+    let subject_data = [];
+    if (subjects !== null && subjects.length > 0) {
+        let MAX_SUBJECTS_PER_REQUEST = 100;
+        let subject_index_counter = 0;
+        let sub_subject_array = [];
+        do {
+            sub_subject_array = subjects.slice(subject_index_counter, subject_index_counter+MAX_SUBJECTS_PER_REQUEST);
+            subject_response = get_json(SUBJECTS_URL.addQuery(sub_subject_array));
+            subject_data.push(...(subject_response.data));
+            subject_index_counter += 100;
+        } while (subject_index_counter < subjects.length);
+        
 
+    } else {
+        subject_response = get_json(SUBJECTS_URL);
+        subject_data.push(...(subject_response.data));
+        while(subject_response.pages.next_url !== null) {
+            subject_response = get_json(subject_response.pages.next_url);
+            subject_data.push(...(subject_response.data));
+        } 
+    }
+
+    return subject_data;
 }
