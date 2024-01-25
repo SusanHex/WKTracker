@@ -59,8 +59,16 @@ function get_script_property(key, log_message=null, error_message=null) {
 }
 
 function get_review_statistics() {
+    
     let review_stats = get_json(REVIEW_STATISTICS_URL);
-    return review_stats;
+    let review_stats_data = [];
+    review_stats_data.push(...(review_stats.data)); 
+
+    while (review_stats.pages.next_url !== null) {
+        review_stats = get_json(review_stats.pages.next_url);
+        review_stats_data.push(...(review_stats.data)); 
+    }
+    return review_stats_data;
 }
 
 function get_subjects() {
