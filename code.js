@@ -87,7 +87,7 @@ function get_subjects(subjects=null) {
         let sub_subject_array = [];
         do {
             sub_subject_array = subjects.slice(subject_index_counter, subject_index_counter+MAX_SUBJECTS_PER_REQUEST);
-            subject_response = get_json(SUBJECTS_URL.addQuery(sub_subject_array));
+            subject_response = get_json(SUBJECTS_URL + `?ids=${sub_subject_array.join(',')}`);
             subject_data.push(...(subject_response.data));
             subject_index_counter += 100;
         } while (subject_index_counter < subjects.length);
