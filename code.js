@@ -11,7 +11,7 @@ String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(o
 function main () {
     Logger.log('Begin main function');
     let review_stats = get_review_statistics();
-    Logger.log(review_stats);
+    Logger.log(`Found ${review_stats.length} review stats`);
     let subject_ids = [];
     for (const review of review_stats) {
         subject_ids.push(review.data.subject_id);
