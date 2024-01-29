@@ -17,8 +17,11 @@ function main () {
         subject_ids.push(review.data.subject_id);
     }
     Logger.log(`Found ${subject_ids.length} subject IDs`);
-    let subjects = get_subjects(subject_ids);
-    Logger.log(`Found ${subjects.length} subjects`);
+    let subject_data = get_subjects(subject_ids);
+    Logger.log(`Found ${subject_data.length} subjects`);
+    let review_subjects = format_subjects_data(review_stats, subject_data);
+    Logger.log(`Found ${review_subjects.length} review subject pairs`);
+
 }
 
 function get_json (url, query=null) {
@@ -103,4 +106,23 @@ function get_subjects(subjects=null) {
     }
 
     return subject_data;
+}
+
+function format_subjects_data(review_stats, subject_data) {
+    let review_subjects = {};
+    
+    for (const review of review_stats) {
+        let review_id = review.data.subject_id;
+        for (const subject of subject_data) {
+            if (subject.id === review.data.subject_id) {
+                review_subjects[review_id] = {
+                    [review_id]: {
+                        'review': review,
+                        'subject': subject,
+                    }
+                };
+            }
+        }
+    }
+    return review_subjects;
 }
