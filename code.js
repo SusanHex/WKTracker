@@ -8,7 +8,7 @@ const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script 
 
 // find spreadsheet name from properties store
 
-const SPREADSHEET_NAME = get_script_property('SPREADSHEET_NAME', 'Please set SPREADSHEET_NAME to the name of your Google Sheets spreadsheet');
+const SPREADSHEET_URL = get_script_property('SPREADSHEET_URL', 'Please set SPREADSHEET_URL to the URL of your Google Sheets spreadsheet');
 
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
@@ -129,4 +129,8 @@ function format_subjects_data(review_stats, subject_data) {
         }
     }
     return review_subjects;
+}
+
+function write_to_sheet(subject_reviews) {
+
 }
