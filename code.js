@@ -6,6 +6,10 @@ const REVIEW_STATISTICS_URL  = API_ROOT + 'review_statistics';
 
 const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script property to your Wanikani API key.');
 
+// find spreadsheet name from properties store
+
+const SPREADSHEET_NAME = get_script_property('SPREADSHEET_NAME', 'Please set SPREADSHEET_NAME to the name of your Google Sheets spreadsheet');
+
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
 function main () {
