@@ -24,7 +24,7 @@ function main () {
     let subject_data = get_subjects(subject_ids);
     Logger.log(`Found ${subject_data.length} subjects`);
     let review_subjects = format_subjects_data(review_stats, subject_data);
-    Logger.log(`Found ${review_subjects.length} review subject pairs`);
+    Logger.log(`Found ${Object.keys(review_subjects).length} review subject pairs`);
 
 }
 
