@@ -25,6 +25,7 @@ function main () {
     Logger.log(`Found ${subject_data.length} subjects`);
     let review_subjects = format_subjects_data(review_stats, subject_data);
     Logger.log(`Found ${Object.keys(review_subjects).length} review subject pairs`);
+    write_to_sheet(review_subjects);
 
 }
 
@@ -120,10 +121,8 @@ function format_subjects_data(review_stats, subject_data) {
         for (const subject of subject_data) {
             if (subject.id === review.data.subject_id) {
                 review_subjects[review_id] = {
-                    [review_id]: {
-                        'review': review,
-                        'subject': subject,
-                    }
+                    'review': review,
+                    'subject': subject,
                 };
             }
         }
@@ -132,5 +131,13 @@ function format_subjects_data(review_stats, subject_data) {
 }
 
 function write_to_sheet(subject_reviews) {
-
+    let spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
+    SpreadsheetApp.openByUrl(SPREADSHEET_URL);
+    Logger.log(`Found spreadsheet "${spreadsheet.getName()}" at ${spreadsheet.getUrl()}`);
+    let sheet = spreadsheet.getActiveSheet();
+    sheet.clear();
+    for (const subject_id of Object.keys(subject_reviews)) {
+      let subject = subject_reviews[subject_id];
+      sheet.appendRow([subject.subject.id, subject.subject.data.slug]);
+    }
 }
