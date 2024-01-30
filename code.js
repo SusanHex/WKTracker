@@ -26,6 +26,7 @@ function main () {
     let review_subjects = format_subjects_data(review_stats, subject_data);
     Logger.log(`Found ${Object.keys(review_subjects).length} review subject pairs`);
     write_to_sheet(review_subjects);
+    Logger.log(`Finished writing to sheet.`);
 
 }
 
@@ -136,8 +137,10 @@ function write_to_sheet(subject_reviews) {
     Logger.log(`Found spreadsheet "${spreadsheet.getName()}" at ${spreadsheet.getUrl()}`);
     let sheet = spreadsheet.getActiveSheet();
     sheet.clear();
+    let temp_data = [];
     for (const subject_id of Object.keys(subject_reviews)) {
       let subject = subject_reviews[subject_id];
-      sheet.appendRow([subject.subject.id, subject.subject.data.slug]);
+      temp_data.push([subject.subject.id, subject.subject.data.slug]);
     }
+    sheet.getRange(1,1, temp_data.length, temp_data[0].length).setValues(temp_data);
 }
