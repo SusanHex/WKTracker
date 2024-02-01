@@ -6,9 +6,10 @@ const REVIEW_STATISTICS_URL  = API_ROOT + 'review_statistics';
 
 const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script property to your Wanikani API key.');
 
-// find spreadsheet name from properties store
+// find spreadsheet URL and sheet name from properties store
 
 const SPREADSHEET_URL = get_script_property('SPREADSHEET_URL', 'Please set SPREADSHEET_URL to the URL of your Google Sheets spreadsheet');
+const SPREADSHEET_SHEET_NAME = get_script_property('SPREADSHEET_SHEET_NAME', '', '');
 
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
@@ -135,7 +136,12 @@ function write_to_sheet(subject_reviews) {
     let spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
     SpreadsheetApp.openByUrl(SPREADSHEET_URL);
     Logger.log(`Found spreadsheet "${spreadsheet.getName()}" at ${spreadsheet.getUrl()}`);
-    let sheet = spreadsheet.getActiveSheet();
+    let sheet = null; 
+    if (SPREADSHEET_SHEET_NAME === null) {
+        sheet = spreadsheet.getActiveSheet();
+    } else {
+        sheet = spreadsheet.getSheetByName(SPREADSHEET_SHEET_NAME);    
+    }
     sheet.clear();
     let temp_data = [];
     for (const subject_id of Object.keys(subject_reviews)) {
@@ -143,4 +149,5 @@ function write_to_sheet(subject_reviews) {
       temp_data.push([subject.subject.id, subject.subject.data.slug]);
     }
     sheet.getRange(1,1, temp_data.length, temp_data[0].length).setValues(temp_data);
+    Logger.log(`Wrote data to sheet named "${sheet.getName()}"`);
 }
