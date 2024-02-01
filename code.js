@@ -133,7 +133,13 @@ function format_subjects_data(review_stats, subject_data) {
 }
 
 function write_to_sheet(subject_reviews) {
-    let spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
+    let spreadsheet = null;
+    try {
+    spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
+    } catch (e) {
+        Logger.log(`Failed to get spreadsheet at "${SPREADSHEET_URL}"`);
+        throw e; 
+    }
     SpreadsheetApp.openByUrl(SPREADSHEET_URL);
     Logger.log(`Found spreadsheet "${spreadsheet.getName()}" at ${spreadsheet.getUrl()}`);
     let sheet = null; 
@@ -141,6 +147,9 @@ function write_to_sheet(subject_reviews) {
         sheet = spreadsheet.getActiveSheet();
     } else {
         sheet = spreadsheet.getSheetByName(SPREADSHEET_SHEET_NAME);    
+    }
+    if (sheet === null) {
+        throw `"${SPREADSHEET_SHEET_NAME}" is not a valid sheet name in "${spreadsheet.getName()}"`
     }
     sheet.clear();
     let temp_data = [];
