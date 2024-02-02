@@ -9,8 +9,8 @@ const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script 
 // find spreadsheet URL and sheet name from properties store
 
 const SPREADSHEET_URL = get_script_property('SPREADSHEET_URL', 'Please set SPREADSHEET_URL to the URL of your Google Sheets spreadsheet');
-const SPREADSHEET_SHEET_NAME = get_script_property('SPREADSHEET_SHEET_NAME', '', 'slug,subject_type,document_url,level,meaning_correct,meaning_incorrect,reading_correct,reading_incorrect');
-const SPREADSHEET_HEADERS = get_script_property('SPREADSHEET_HEADERS', 'No value was found for SPREADSHEET_HEADERS property, set it to default', '', '')
+const SPREADSHEET_SHEET_NAME = get_script_property('SPREADSHEET_SHEET_NAME', '', '');
+const SPREADSHEET_HEADERS = get_script_property('SPREADSHEET_HEADERS', 'No value was found for SPREADSHEET_HEADERS property, set it to default', '', 'slug,subject_type,document_url,level,meaning_correct,meaning_incorrect,reading_correct,reading_incorrect')
 
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
