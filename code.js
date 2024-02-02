@@ -158,14 +158,20 @@ function write_to_sheet(subject_reviews) {
     }
     sheet.clear();
     let temp_data = [];
+    let headers = get_header();
+    temp_data.push(headers);
     for (const subject_id of Object.keys(subject_reviews)) {
-      let subject = subject_reviews[subject_id];
-      temp_data.push([subject.subject.id, subject.subject.data.slug]);
+        let subject = subject_reviews[subject_id];
+        let temp_data_row = [];
+        for(const header of headers) {
+            temp_data_row.push(subject[header]);
+        }
+        temp_data.push(temp_data_row);
     }
     sheet.getRange(1,1, temp_data.length, temp_data[0].length).setValues(temp_data);
     Logger.log(`Wrote data to sheet named "${sheet.getName()}"`);
 }
 
 function get_header() {
-    
+    return SPREADSHEET_HEADERS.split(',');
 }
