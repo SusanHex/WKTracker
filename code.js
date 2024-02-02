@@ -128,8 +128,8 @@ function format_subjects_data(review_stats, subject_data) {
         for (const subject of subject_data) {
             if (subject.id === review.data.subject_id) {
                 review_subjects[review_id] = {
-                    'review': review,
-                    'subject': subject,
+                    ...(review.data),
+                    ...(subject.data),
                 };
             }
         }
