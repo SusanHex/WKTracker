@@ -165,3 +165,7 @@ function write_to_sheet(subject_reviews) {
     sheet.getRange(1,1, temp_data.length, temp_data[0].length).setValues(temp_data);
     Logger.log(`Wrote data to sheet named "${sheet.getName()}"`);
 }
+
+function get_header() {
+    
+}
