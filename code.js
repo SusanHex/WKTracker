@@ -10,6 +10,7 @@ const API_TOKEN = get_script_property('API_TOKEN', 'Please set API_TOKEN script 
 
 const SPREADSHEET_URL = get_script_property('SPREADSHEET_URL', 'Please set SPREADSHEET_URL to the URL of your Google Sheets spreadsheet');
 const SPREADSHEET_SHEET_NAME = get_script_property('SPREADSHEET_SHEET_NAME', '', '');
+const SPREADSHEET_HEADERS = get_script_property('SPREADSHEET_HEADERS', 'No value was found for SPREADSHEET_HEADERS property, set it to default', '', '')
 
 String.prototype.addQuery = function (obj) {return this + "?" + Object.entries(obj).flatMap(([k, v]) => Array.isArray(v) ? v.map(e => `${k}=${encodeURIComponent(e)}`) : `${k}=${encodeURIComponent(v)}`).join("&");};
 
@@ -54,10 +55,10 @@ function get_json (url, query=null) {
     }
 }
 
-function get_script_property(key, log_message=null, error_message=null) {
+function get_script_property(key, log_message=null, error_message=null, init_value='') {
     let value = PropertiesService.getScriptProperties().getProperty(key);
     if (value === null || value.length === 0) {
-        PropertiesService.getScriptProperties().setProperty(key, '');
+        PropertiesService.getScriptProperties().setProperty(key, init_value);
         if (log_message === null) {
             Logger.log(`Please provide a value for '${key}'`);
         }
@@ -70,7 +71,11 @@ function get_script_property(key, log_message=null, error_message=null) {
         else if (error_message.length > 0) {
             throw error_message;
         }
-        return null;
+        if (init_value !== null && init_value.length > 0) {
+            return init_value
+        } else {
+            return null;
+        }
     };
     return value;
 }
